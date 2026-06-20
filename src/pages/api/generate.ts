@@ -3,16 +3,14 @@ import { buildPrompt } from '../../lib/prompt';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { prompt, gameType, category, style, outputLang, count } = body;
 
-    // Access Cloudflare runtime env through locals
+    // Astro 7 + Cloudflare adapter: use cloudflare:workers module
     // @ts-ignore
-    const runtime = locals?.runtime;
-    // @ts-ignore  
-    const env = runtime?.env || {};
+    const { env } = await import('cloudflare:workers');
     
     const apiKey = env.AGNES_API_KEY;
     const baseUrl = env.AGNES_BASE_URL || 'https://apihub.agnes-ai.com/v1';
