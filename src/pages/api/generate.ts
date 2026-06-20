@@ -3,27 +3,19 @@ import { buildPrompt } from '../../lib/prompt';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
     const { prompt, gameType, category, style, outputLang, count } = body;
 
-    // Cloudflare Pages Functions: use cloudflare:workers module for env vars
-    let apiKey: string | undefined;
-    let baseUrl: string | undefined;
+    // Access Cloudflare runtime env through locals
+    // @ts-ignore
+    const runtime = locals?.runtime;
+    // @ts-ignore  
+    const env = runtime?.env || {};
     
-    try {
-      // @ts-ignore - cloudflare:workers is only available in CF runtime
-      const { env } = await import('cloudflare:workers');
-      apiKey = env.AGNES_API_KEY;
-      baseUrl = env.AGNES_BASE_URL;
-    } catch {
-      // Fallback for local dev or if module not available
-      apiKey = import.meta.env.AGNES_API_KEY;
-      baseUrl = import.meta.env.AGNES_BASE_URL;
-    }
-
-    baseUrl = baseUrl || 'https://apihub.agnes-ai.com/v1';
+    const apiKey = env.AGNES_API_KEY;
+    const baseUrl = env.AGNES_BASE_URL || 'https://apihub.agnes-ai.com/v1';
 
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API key not configured' }), {
