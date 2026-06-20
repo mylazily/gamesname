@@ -1,8 +1,10 @@
-import { readFileSync, writeFileSync, existsSync, unlinkSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, unlinkSync, copyFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 const wranglerPath = join(process.cwd(), 'dist', 'server', 'wrangler.json');
 const deployConfigPath = join(process.cwd(), '.wrangler', 'deploy', 'config.json');
+const workerSrc = join(process.cwd(), 'dist', 'server', 'entry.mjs');
+const workerDest = join(process.cwd(), 'dist', 'client', '_worker.js');
 
 try {
   // Fix 1: Clean up dist/server/wrangler.json
@@ -45,11 +47,16 @@ try {
   }
 
   // Fix 2: Remove .wrangler/deploy/config.json redirect
-  // This file causes "wrangler.json does not exist" error in CF Pages build
-  // because it's checked BEFORE npm run build completes
   if (existsSync(deployConfigPath)) {
     unlinkSync(deployConfigPath);
     console.log('Removed .wrangler/deploy/config.json redirect');
+  }
+
+  // Fix 3: Copy worker entry to dist/client/_worker.js for CF Pages
+  // CF Pages uses _worker.js in the static output root for SSR
+  if (existsSync(workerSrc)) {
+    copyFileSync(workerSrc, workerDest);
+    console.log('Copied worker to dist/client/_worker.js');
   }
 
   console.log('Wrangler config fixed for Cloudflare Pages deployment');
