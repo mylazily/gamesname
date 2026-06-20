@@ -4,7 +4,7 @@ import BottomNav from '../components/BottomNav.astro';
 import PromptBox from '../components/PromptBox.astro';
 import { getLocale, t } from '../lib/i18n';
 
-export const prerender = true;
+export const prerender = false;
 
 const locale = getLocale(Astro.url);
 const pageTitle = t(locale, 'generate.title');
