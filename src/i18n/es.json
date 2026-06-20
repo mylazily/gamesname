@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "GamesName",
+    "description": "Generador de nombres de juegos con IA"
+  },
+  "nav": {
+    "generate": "Generar",
+    "types": "Tipos",
+    "styles": "Estilos",
+    "profile": "Perfil"
+  },
+  "generate": {
+    "title": "Generador de Nombres de Juegos",
+    "placeholder": "Describe tu personaje, gremio o equipo...",
+    "button": "Generar Nombres",
+    "generating": "Generando...",
+    "gameType": "Tipo de Juego",
+    "category": "Categoría",
+    "style": "Estilo",
+    "outputLang": "Idioma de Salida",
+    "count": "Cantidad"
+  },
+  "nameCard": {
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "favorite": "Favorito",
+    "meaning": "Significado"
+  },
+  "types": {
+    "title": "Explorar por Tipo de Juego",
+    "rpg": "RPG",
+    "fps": "FPS",
+    "moba": "MOBA",
+    "mmorpg": "MMORPG",
+    "strategy": "Estrategia",
+    "sandbox": "Sandbox",
+    "racing": "Carreras",
+    "fighting": "Lucha"
+  },
+  "styles": {
+    "title": "Explorar por Estilo",
+    "epic": "Épico",
+    "funny": "Divertido",
+    "dark": "Oscuro",
+    "mythology": "Mitología",
+    "fantasy": "Fantasía",
+    "scifi": "Ciencia Ficción",
+    "nature": "Naturaleza",
+    "mystery": "Misterio"
+  },
+  "history": {
+    "title": "Historial",
+    "favorites": "Favoritos",
+    "clear": "Borrar Todo",
+    "empty": "Aún no hay historial"
+  },
+  "profile": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "theme": "Tema",
+    "about": "Acerca de",
+    "version": "Versión 1.0.0"
+  },
+  "categories": {
+    "character": "Personaje",
+    "guild": "Gremio",
+    "team": "Equipo",
+    "pet": "Mascota",
+    "mount": "Montura",
+    "weapon": "Arma",
+    "clan": "Clan"
+  },
+  "errors": {
+    "generateFailed": "Error al generar nombres. Inténtalo de nuevo.",
+    "rateLimited": "Demasiadas solicitudes. Espera un momento."
+  }
+}

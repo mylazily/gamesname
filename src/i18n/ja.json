@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "GamesName",
+    "description": "AI搭載ゲームネームジェネレーター"
+  },
+  "nav": {
+    "generate": "生成",
+    "types": "タイプ",
+    "styles": "スタイル",
+    "profile": "設定"
+  },
+  "generate": {
+    "title": "ゲームネームジェネレーター",
+    "placeholder": "ゲームキャラクター、ギルド、チームを説明...",
+    "button": "名前を生成",
+    "generating": "生成中...",
+    "gameType": "ゲームタイプ",
+    "category": "カテゴリー",
+    "style": "スタイル",
+    "outputLang": "出力言語",
+    "count": "数"
+  },
+  "nameCard": {
+    "copy": "コピー",
+    "copied": "コピー済み!",
+    "favorite": "お気に入り",
+    "meaning": "意味"
+  },
+  "types": {
+    "title": "ゲームタイプで探す",
+    "rpg": "RPG",
+    "fps": "FPS",
+    "moba": "MOBA",
+    "mmorpg": "MMORPG",
+    "strategy": "ストラテジー",
+    "sandbox": "サンドボックス",
+    "racing": "レーシング",
+    "fighting": "ファイティング"
+  },
+  "styles": {
+    "title": "スタイルで探す",
+    "epic": "エピック",
+    "funny": "面白い",
+    "dark": "ダーク",
+    "mythology": "神話",
+    "fantasy": "ファンタジー",
+    "scifi": "SF",
+    "nature": "自然",
+    "mystery": "ミステリー"
+  },
+  "history": {
+    "title": "履歴",
+    "favorites": "お気に入り",
+    "clear": "すべて削除",
+    "empty": "履歴がありません"
+  },
+  "profile": {
+    "title": "設定",
+    "language": "言語",
+    "theme": "テーマ",
+    "about": "について",
+    "version": "バージョン 1.0.0"
+  },
+  "categories": {
+    "character": "キャラクター",
+    "guild": "ギルド",
+    "team": "チーム",
+    "pet": "ペット",
+    "mount": "マウント",
+    "weapon": "武器",
+    "clan": "クラン"
+  },
+  "errors": {
+    "generateFailed": "生成に失敗しました。もう一度お試しください。",
+    "rateLimited": "リクエストが多すぎます。しばらくしてからお試しください。"
+  }
+}

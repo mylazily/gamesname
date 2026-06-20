@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "GamesName",
+    "description": "AI驱动的游戏取名生成器"
+  },
+  "nav": {
+    "generate": "生成",
+    "types": "类型",
+    "styles": "风格",
+    "profile": "我的"
+  },
+  "generate": {
+    "title": "游戏取名生成器",
+    "placeholder": "描述你的游戏角色、公会或战队...",
+    "button": "生成名字",
+    "generating": "生成中...",
+    "gameType": "游戏类型",
+    "category": "类别",
+    "style": "风格",
+    "outputLang": "输出语言",
+    "count": "数量"
+  },
+  "nameCard": {
+    "copy": "复制",
+    "copied": "已复制!",
+    "favorite": "收藏",
+    "meaning": "含义"
+  },
+  "types": {
+    "title": "按游戏类型浏览",
+    "rpg": "角色扮演",
+    "fps": "射击",
+    "moba": "MOBA",
+    "mmorpg": "大型多人在线",
+    "strategy": "策略",
+    "sandbox": "沙盒",
+    "racing": "竞速",
+    "fighting": "格斗"
+  },
+  "styles": {
+    "title": "按风格浏览",
+    "epic": "史诗",
+    "funny": "搞笑",
+    "dark": "暗黑",
+    "mythology": "神话",
+    "fantasy": "奇幻",
+    "scifi": "科幻",
+    "nature": "自然",
+    "mystery": "神秘"
+  },
+  "history": {
+    "title": "历史记录",
+    "favorites": "收藏",
+    "clear": "清空全部",
+    "empty": "暂无记录"
+  },
+  "profile": {
+    "title": "设置",
+    "language": "语言",
+    "theme": "主题",
+    "about": "关于",
+    "version": "版本 1.0.0"
+  },
+  "categories": {
+    "character": "角色",
+    "guild": "公会",
+    "team": "战队",
+    "pet": "宠物",
+    "mount": "坐骑",
+    "weapon": "武器",
+    "clan": "氏族"
+  },
+  "errors": {
+    "generateFailed": "生成失败，请重试。",
+    "rateLimited": "请求过于频繁，请稍后再试。"
+  }
+}

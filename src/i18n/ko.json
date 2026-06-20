@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "GamesName",
+    "description": "AI 기반 게임 이름 생성기"
+  },
+  "nav": {
+    "generate": "생성",
+    "types": "유형",
+    "styles": "스타일",
+    "profile": "설정"
+  },
+  "generate": {
+    "title": "게임 이름 생성기",
+    "placeholder": "게임 캐릭터, 길드 또는 팀을 설명...",
+    "button": "이름 생성",
+    "generating": "생성 중...",
+    "gameType": "게임 유형",
+    "category": "카테고리",
+    "style": "스타일",
+    "outputLang": "출력 언어",
+    "count": "개수"
+  },
+  "nameCard": {
+    "copy": "복사",
+    "copied": "복사됨!",
+    "favorite": "즐겨찾기",
+    "meaning": "의미"
+  },
+  "types": {
+    "title": "게임 유형으로 찾기",
+    "rpg": "RPG",
+    "fps": "FPS",
+    "moba": "MOBA",
+    "mmorpg": "MMORPG",
+    "strategy": "전략",
+    "sandbox": "샌드박스",
+    "racing": "레이싱",
+    "fighting": "격투"
+  },
+  "styles": {
+    "title": "스타일로 찾기",
+    "epic": "에픽",
+    "funny": "재미있는",
+    "dark": "다크",
+    "mythology": "신화",
+    "fantasy": "판타지",
+    "scifi": "SF",
+    "nature": "자연",
+    "mystery": "미스터리"
+  },
+  "history": {
+    "title": "기록",
+    "favorites": "즐겨찾기",
+    "clear": "모두 지우기",
+    "empty": "기록이 없습니다"
+  },
+  "profile": {
+    "title": "설정",
+    "language": "언어",
+    "theme": "테마",
+    "about": "소개",
+    "version": "버전 1.0.0"
+  },
+  "categories": {
+    "character": "캐릭터",
+    "guild": "길드",
+    "team": "팀",
+    "pet": "펫",
+    "mount": "탈것",
+    "weapon": "무기",
+    "clan": "클랜"
+  },
+  "errors": {
+    "generateFailed": "생성에 실패했습니다. 다시 시도해주세요.",
+    "rateLimited": "요청이 너무 많습니다. 잠시 후 다시 시도해주세요."
+  }
+}

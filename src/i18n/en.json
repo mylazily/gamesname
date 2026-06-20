@@ -1,0 +1,77 @@
+{
+  "site": {
+    "name": "GamesName",
+    "description": "AI-powered game name generator"
+  },
+  "nav": {
+    "generate": "Generate",
+    "types": "Types",
+    "styles": "Styles",
+    "profile": "Profile"
+  },
+  "generate": {
+    "title": "Game Name Generator",
+    "placeholder": "Describe your game character, guild, or team...",
+    "button": "Generate Names",
+    "generating": "Generating...",
+    "gameType": "Game Type",
+    "category": "Category",
+    "style": "Style",
+    "outputLang": "Output Language",
+    "count": "Count"
+  },
+  "nameCard": {
+    "copy": "Copy",
+    "copied": "Copied!",
+    "favorite": "Favorite",
+    "meaning": "Meaning"
+  },
+  "types": {
+    "title": "Browse by Game Type",
+    "rpg": "RPG",
+    "fps": "FPS",
+    "moba": "MOBA",
+    "mmorpg": "MMORPG",
+    "strategy": "Strategy",
+    "sandbox": "Sandbox",
+    "racing": "Racing",
+    "fighting": "Fighting"
+  },
+  "styles": {
+    "title": "Browse by Style",
+    "epic": "Epic",
+    "funny": "Funny",
+    "dark": "Dark",
+    "mythology": "Mythology",
+    "fantasy": "Fantasy",
+    "scifi": "Sci-Fi",
+    "nature": "Nature",
+    "mystery": "Mystery"
+  },
+  "history": {
+    "title": "History",
+    "favorites": "Favorites",
+    "clear": "Clear All",
+    "empty": "No history yet"
+  },
+  "profile": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "about": "About",
+    "version": "Version 1.0.0"
+  },
+  "categories": {
+    "character": "Character",
+    "guild": "Guild",
+    "team": "Team",
+    "pet": "Pet",
+    "mount": "Mount",
+    "weapon": "Weapon",
+    "clan": "Clan"
+  },
+  "errors": {
+    "generateFailed": "Failed to generate names. Please try again.",
+    "rateLimited": "Too many requests. Please wait a moment."
+  }
+}
