@@ -8,12 +8,27 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { prompt, gameType, category, style, outputLang, count } = body;
 
-    // Astro 7 + Cloudflare adapter: use cloudflare:workers module
-    // @ts-ignore
-    const { env } = await import('cloudflare:workers');
-    
-    const apiKey = env.AGNES_API_KEY;
-    const baseUrl = env.AGNES_BASE_URL || 'https://apihub.agnes-ai.com/v1';
+    // Try multiple ways to get env vars in Cloudflare Pages
+    let apiKey: string | undefined;
+    let baseUrl: string | undefined;
+
+    // Method 1: import.meta.env (build-time for Astro)
+    apiKey = apiKey || (import.meta as any).env?.AGNES_API_KEY;
+    baseUrl = baseUrl || (import.meta as any).env?.AGNES_BASE_URL;
+
+    // Method 2: process.env (Node.js compat)
+    try {
+      apiKey = apiKey || (process as any).env?.AGNES_API_KEY;
+      baseUrl = baseUrl || (process as any).env?.AGNES_BASE_URL;
+    } catch {}
+
+    // Method 3: globalThis
+    try {
+      apiKey = apiKey || (globalThis as any).AGNES_API_KEY;
+      baseUrl = baseUrl || (globalThis as any).AGNES_BASE_URL;
+    } catch {}
+
+    baseUrl = baseUrl || 'https://apihub.agnes-ai.com/v1';
 
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API key not configured' }), {
