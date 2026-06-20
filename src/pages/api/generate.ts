@@ -3,13 +3,18 @@ import { buildPrompt } from '../../lib/prompt';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
     const { prompt, gameType, category, style, outputLang, count } = body;
 
-    const apiKey = import.meta.env.AGNES_API_KEY;
-    const baseUrl = import.meta.env.AGNES_BASE_URL || 'https://apihub.agnes-ai.com/v1';
+    // Cloudflare Pages Functions: env vars are on locals.runtime.env
+    // @ts-ignore
+    const runtime = locals?.runtime;
+    const env = runtime?.env || {};
+    
+    const apiKey = env.AGNES_API_KEY || import.meta.env.AGNES_API_KEY;
+    const baseUrl = env.AGNES_BASE_URL || import.meta.env.AGNES_BASE_URL || 'https://apihub.agnes-ai.com/v1';
 
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API key not configured' }), {
