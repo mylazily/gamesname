@@ -1,0 +1,5 @@
+name = "gamesname"
+compatibility_date = "2026-06-20"
+
+[vars]
+AGNES_BASE_URL = "https://apihub.agnes-ai.com/v1"
