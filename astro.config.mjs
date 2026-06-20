@@ -14,6 +14,7 @@ export default defineConfig({
     },
     imageService: 'passthrough',
     prerenderEnvironment: 'node',
+    sessionKVBinding: false,
   }),
   integrations: [
     sitemap({
