@@ -70,7 +70,15 @@
     "weapon": "武器",
     "clan": "クラン"
   },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "es": "Español"
+  },
   "errors": {
+    "validate": "フィルターまたは説明を入力してください",
     "generateFailed": "生成に失敗しました。もう一度お試しください。",
     "rateLimited": "リクエストが多すぎます。しばらくしてからお試しください。"
   }

@@ -70,7 +70,15 @@
     "weapon": "무기",
     "clan": "클랜"
   },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "es": "Español"
+  },
   "errors": {
+    "validate": "필터를 선택하거나 설명을 입력하세요",
     "generateFailed": "생성에 실패했습니다. 다시 시도해주세요.",
     "rateLimited": "요청이 너무 많습니다. 잠시 후 다시 시도해주세요."
   }

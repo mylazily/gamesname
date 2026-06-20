@@ -70,7 +70,15 @@
     "weapon": "Weapon",
     "clan": "Clan"
   },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "es": "Español"
+  },
   "errors": {
+    "validate": "Please select at least one filter or enter a description",
     "generateFailed": "Failed to generate names. Please try again.",
     "rateLimited": "Too many requests. Please wait a moment."
   }

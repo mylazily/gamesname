@@ -70,7 +70,15 @@
     "weapon": "Arma",
     "clan": "Clan"
   },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "es": "Español"
+  },
   "errors": {
+    "validate": "Selecciona al menos un filtro o ingresa una descripción",
     "generateFailed": "Error al generar nombres. Inténtalo de nuevo.",
     "rateLimited": "Demasiadas solicitudes. Espera un momento."
   }

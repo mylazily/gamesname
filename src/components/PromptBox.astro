@@ -56,11 +56,11 @@ const { locale = 'en' } = Astro.props;
   </select>
 
   <select id="output-lang" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
-    <option value="en">English</option>
-    <option value="zh">中文</option>
-    <option value="ja">日本語</option>
-    <option value="ko">한국어</option>
-    <option value="es">Español</option>
+    <option value="en">{t(locale, 'languages.en')}</option>
+    <option value="zh">{t(locale, 'languages.zh')}</option>
+    <option value="ja">{t(locale, 'languages.ja')}</option>
+    <option value="ko">{t(locale, 'languages.ko')}</option>
+    <option value="es">{t(locale, 'languages.es')}</option>
   </select>
 
   <select id="count" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
@@ -70,6 +70,6 @@ const { locale = 'en' } = Astro.props;
   </select>
 </div>
 
-<button id="generate-btn" class="mt-4 w-full h-12 bg-pink-600 text-white font-medium rounded-xl hover:bg-pink-700 transition-colors flex items-center justify-center gap-2">
+<button id="generate-btn-real" class="mt-4 w-full h-12 bg-pink-600 text-white font-medium rounded-xl hover:bg-pink-700 transition-colors flex items-center justify-center gap-2">
   <span id="btn-text">{t(locale, 'generate.button')}</span>
 </button>

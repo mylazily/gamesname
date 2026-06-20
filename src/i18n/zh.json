@@ -70,7 +70,15 @@
     "weapon": "武器",
     "clan": "氏族"
   },
+  "languages": {
+    "en": "English",
+    "zh": "中文",
+    "ja": "日本語",
+    "ko": "한국어",
+    "es": "Español"
+  },
   "errors": {
+    "validate": "请至少选择一个筛选条件或输入描述",
     "generateFailed": "生成失败，请重试。",
     "rateLimited": "请求过于频繁，请稍后再试。"
   }
