@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BottomNav from '../components/BottomNav.astro';
+import { getLocale, t } from '../lib/i18n';
+
+export const prerender = true;
+
+const locale = getLocale(Astro.url);
+
+const gameTypes = [
+  { key: 'rpg', icon: 'Sword' },
+  { key: 'fps', icon: 'Target' },
+  { key: 'moba', icon: 'Castle' },
+  { key: 'mmorpg', icon: 'Globe' },
+  { key: 'strategy', icon: 'Chess' },
+  { key: 'sandbox', icon: 'Box' },
+  { key: 'racing', icon: 'Car' },
+  { key: 'fighting', icon: 'Fist' },
+];
+
+const CAT_COLORS = [
+  'bg-red-50 text-red-600 hover:bg-red-100',
+  'bg-blue-50 text-blue-600 hover:bg-blue-100',
+  'bg-yellow-50 text-yellow-600 hover:bg-yellow-100',
+  'bg-purple-50 text-purple-600 hover:bg-purple-100',
+  'bg-green-50 text-green-600 hover:bg-green-100',
+  'bg-orange-50 text-orange-600 hover:bg-orange-100',
+  'bg-pink-50 text-pink-600 hover:bg-pink-100',
+  'bg-indigo-50 text-indigo-600 hover:bg-indigo-100',
+];
+---
+
+<Layout
+  title={t(locale, 'types.title')}
+  description="Browse game names by game type"
+  locale={locale}
+>
+  <main class="max-w-screen-xl mx-auto pb-20">
+    <div class="bg-white border-b border-gray-100">
+      <div class="px-3 py-3">
+        <h1 class="text-xl font-bold text-gray-800">{t(locale, 'types.title')}</h1>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 p-3">
+      {gameTypes.map((type, i) => (
+        <a href={`/?type=${type.key}`} class={`flex flex-col items-center gap-2 px-4 py-6 rounded-xl transition-colors ${CAT_COLORS[i % CAT_COLORS.length]}`}>
+          <span class="text-3xl">{type.icon}</span>
+          <span class="text-sm font-medium">{t(locale, `types.${type.key}`)}</span>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <BottomNav locale={locale} />
+</Layout>

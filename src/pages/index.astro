@@ -1,0 +1,211 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BottomNav from '../components/BottomNav.astro';
+import PromptBox from '../components/PromptBox.astro';
+import { getLocale, t } from '../lib/i18n';
+
+export const prerender = true;
+
+const locale = getLocale(Astro.url);
+const pageTitle = t(locale, 'generate.title');
+const pageDesc = t(locale, 'site.description');
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDesc}
+  isHome={true}
+  locale={locale}
+>
+  <div class="bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <div class="max-w-screen-xl mx-auto px-3 py-3">
+      <h1 class="text-xl font-bold text-gray-800">{t(locale, 'site.name')}</h1>
+      <p class="text-sm text-gray-500 mt-0.5">{t(locale, 'site.description')}</p>
+    </div>
+  </div>
+
+  <div class="bg-white border-b border-gray-100">
+    <div class="max-w-screen-xl mx-auto px-3 py-4">
+      <PromptBox locale={locale} />
+    </div>
+  </div>
+
+  <main class="max-w-screen-xl mx-auto px-3 pt-4 pb-20">
+    <div id="results-loading" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {Array.from({ length: 6 }).map(() => (
+          <div class="bg-white rounded-xl border border-gray-100 p-4">
+            <div class="h-6 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+            <div class="mt-2 h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+            <div class="mt-3 flex gap-2">
+              <div class="h-5 w-16 bg-gray-200 rounded-full animate-pulse"></div>
+              <div class="h-5 w-16 bg-gray-200 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div id="results-empty" class="text-center py-20">
+      <p class="text-gray-500">{t(locale, 'history.empty')}</p>
+    </div>
+    <div id="results-grid" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+  </main>
+
+  <BottomNav locale={locale} />
+
+  <script is:inline>
+    (function() {
+      const btn = document.getElementById('generate-btn');
+      const btnText = document.getElementById('btn-text');
+      const loading = document.getElementById('results-loading');
+      const empty = document.getElementById('results-empty');
+      const grid = document.getElementById('results-grid');
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function createNameCard(name, meaning, style, category) {
+        return `
+          <div class="group bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md transition-all cursor-pointer">
+            <div class="flex items-start justify-between">
+              <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-bold text-gray-800 group-hover:text-pink-700 transition-colors truncate">${escapeHtml(name)}</h3>
+                <p class="mt-1 text-sm text-gray-500 line-clamp-2">${escapeHtml(meaning)}</p>
+              </div>
+              <div class="flex flex-col gap-2 ml-3 flex-shrink-0">
+                <button class="copy-btn w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-pink-50 hover:text-pink-600 transition-colors" data-name="${escapeHtml(name)}" title="Copy">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <button class="fav-btn w-8 h-8 flex items-center justify-center rounded-lg bg-gray-100 hover:bg-pink-50 hover:text-pink-600 transition-colors" data-name="${escapeHtml(name)}" data-meaning="${escapeHtml(meaning)}" title="Favorite">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs bg-pink-50 text-pink-600 rounded-full">${escapeHtml(style)}</span>
+              <span class="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">${escapeHtml(category)}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      function parseNames(text) {
+        const names = [];
+        const lines = text.split('\n').filter(line => line.trim());
+        for (const line of lines) {
+          const match = line.match(/^\d+\.\s*(.+?)(?:\s*[\|\-:]\s*(.+))?$/);
+          if (match) {
+            names.push({ name: match[1].trim(), meaning: match[2]?.trim() || '' });
+          }
+        }
+        return names;
+      }
+
+      function saveToHistory(names, params) {
+        try {
+          const history = JSON.parse(localStorage.getItem('gamesname_history') || '[]');
+          history.unshift({ names, params, timestamp: Date.now() });
+          if (history.length > 50) history.pop();
+          localStorage.setItem('gamesname_history', JSON.stringify(history));
+        } catch (e) {}
+      }
+
+      async function generate() {
+        const prompt = document.getElementById('prompt-input').value;
+        const gameType = document.getElementById('game-type').value;
+        const category = document.getElementById('category').value;
+        const style = document.getElementById('style').value;
+        const outputLang = document.getElementById('output-lang').value;
+        const count = document.getElementById('count').value;
+
+        if (!gameType && !category && !style && !prompt) {
+          alert('Please select at least one filter or enter a description');
+          return;
+        }
+
+        btn.disabled = true;
+        btnText.textContent = 'Generating...';
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        grid.classList.add('hidden');
+
+        try {
+          const resp = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, gameType, category, style, outputLang, count: parseInt(count) }),
+          });
+
+          const result = await resp.json();
+
+          if (!result.success) {
+            throw new Error(result.error || 'Generation failed');
+          }
+
+          const names = parseNames(result.data);
+          
+          if (names.length === 0) {
+            empty.classList.remove('hidden');
+            loading.classList.add('hidden');
+            return;
+          }
+
+          const styleLabel = document.getElementById('style').options[document.getElementById('style').selectedIndex].text;
+          const categoryLabel = document.getElementById('category').options[document.getElementById('category').selectedIndex].text;
+
+          grid.innerHTML = names.map(n => createNameCard(n.name, n.meaning, styleLabel, categoryLabel)).join('');
+          
+          saveToHistory(names, { prompt, gameType, category, style, outputLang, count });
+
+          loading.classList.add('hidden');
+          grid.classList.remove('hidden');
+
+          grid.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const name = this.dataset.name;
+              navigator.clipboard.writeText(name).then(() => {
+                this.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                setTimeout(() => {
+                  this.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>';
+                }, 1500);
+              });
+            });
+          });
+
+          grid.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const name = this.dataset.name;
+              const meaning = this.dataset.meaning;
+              try {
+                const favs = JSON.parse(localStorage.getItem('gamesname_favorites') || '[]');
+                if (!favs.find(f => f.name === name)) {
+                  favs.unshift({ name, meaning, timestamp: Date.now() });
+                  localStorage.setItem('gamesname_favorites', JSON.stringify(favs));
+                }
+                this.innerHTML = '<svg class="w-4 h-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>';
+              } catch (e) {}
+            });
+          });
+
+        } catch (err) {
+          alert('Failed to generate names: ' + err.message);
+          loading.classList.add('hidden');
+          empty.classList.remove('hidden');
+        } finally {
+          btn.disabled = false;
+          btnText.textContent = 'Generate Names';
+        }
+      }
+
+      btn.addEventListener('click', generate);
+      document.getElementById('prompt-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') generate();
+      });
+    })();
+  </script>
+</Layout>

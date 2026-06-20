@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BottomNav from '../components/BottomNav.astro';
+import { getLocale, t, supportedLocales, type Locale } from '../lib/i18n';
+
+export const prerender = true;
+
+const locale = getLocale(Astro.url);
+
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'zh', label: '中文' },
+  { code: 'ja', label: '日本語' },
+  { code: 'ko', label: '한국어' },
+  { code: 'es', label: 'Español' },
+];
+---
+
+<Layout
+  title={t(locale, 'profile.title')}
+  description="Settings and preferences"
+  locale={locale}
+>
+  <main class="max-w-screen-xl mx-auto pb-20">
+    <div class="bg-white border-b border-gray-100">
+      <div class="px-3 py-3">
+        <h1 class="text-xl font-bold text-gray-800">{t(locale, 'profile.title')}</h1>
+      </div>
+    </div>
+
+    <div class="bg-white mt-2">
+      <div class="px-3 py-2 border-b border-gray-100">
+        <span class="text-sm font-medium text-gray-800">{t(locale, 'profile.language')}</span>
+      </div>
+      <div class="p-3">
+        <div class="flex flex-wrap gap-2">
+          {languages.map(lang => (
+            <a 
+              href={`?lang=${lang.code}`} 
+              class={`px-3 py-1.5 text-sm rounded-full transition-colors ${lang.code === locale ? 'bg-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+            >
+              {lang.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white mt-2">
+      <div class="px-3 py-2 border-b border-gray-100">
+        <span class="text-sm font-medium text-gray-800">{t(locale, 'profile.about')}</span>
+      </div>
+      <div class="p-3">
+        <p class="text-sm text-gray-600">GamesName - AI-powered game name generator</p>
+        <p class="text-xs text-gray-400 mt-1">{t(locale, 'profile.version')}</p>
+        <p class="text-xs text-gray-400 mt-2">Powered by Agnes AI</p>
+      </div>
+    </div>
+  </main>
+
+  <BottomNav locale={locale} />
+</Layout>

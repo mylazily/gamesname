@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BottomNav from '../components/BottomNav.astro';
+import { getLocale, t } from '../lib/i18n';
+
+export const prerender = true;
+
+const locale = getLocale(Astro.url);
+---
+
+<Layout
+  title={t(locale, 'history.title')}
+  description="Your generated game names history"
+  locale={locale}
+>
+  <main class="max-w-screen-xl mx-auto pb-20">
+    <div class="bg-white border-b border-gray-100">
+      <div class="px-3 py-3 flex items-center justify-between">
+        <h1 class="text-xl font-bold text-gray-800">{t(locale, 'history.title')}</h1>
+        <button id="clear-btn" class="text-sm text-pink-600 hover:text-pink-700">{t(locale, 'history.clear')}</button>
+      </div>
+    </div>
+
+    <div class="bg-white mt-2">
+      <div class="px-3 py-2 border-b border-gray-100">
+        <span class="text-sm font-medium text-gray-800">{t(locale, 'history.favorites')}</span>
+      </div>
+      <div id="favorites-list" class="p-3 space-y-2"></div>
+    </div>
+
+    <div class="bg-white mt-2">
+      <div class="px-3 py-2 border-b border-gray-100">
+        <span class="text-sm font-medium text-gray-800">{t(locale, 'history.title')}</span>
+      </div>
+      <div id="history-list" class="p-3 space-y-2"></div>
+    </div>
+  </main>
+
+  <BottomNav locale={locale} />
+
+  <script is:inline>
+    (function() {
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function renderFavorites() {
+        const container = document.getElementById('favorites-list');
+        try {
+          const favs = JSON.parse(localStorage.getItem('gamesname_favorites') || '[]');
+          if (favs.length === 0) {
+            container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">No favorites yet</p>';
+            return;
+          }
+          container.innerHTML = favs.map(f => `
+            <div class="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+              <div class="flex-1 min-w-0">
+                <span class="font-medium text-gray-800">${escapeHtml(f.name)}</span>
+                <p class="text-xs text-gray-500 mt-0.5">${escapeHtml(f.meaning || '')}</p>
+              </div>
+              <button class="copy-btn ml-2 w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-pink-50 hover:text-pink-600 transition-colors" data-name="${escapeHtml(f.name)}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              </button>
+            </div>
+          `).join('');
+        } catch (e) {
+          container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">Error loading favorites</p>';
+        }
+      }
+
+      function renderHistory() {
+        const container = document.getElementById('history-list');
+        try {
+          const history = JSON.parse(localStorage.getItem('gamesname_history') || '[]');
+          if (history.length === 0) {
+            container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">No history yet</p>';
+            return;
+          }
+          container.innerHTML = history.map(h => `
+            <div class="bg-gray-50 rounded-lg p-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-gray-400">${new Date(h.timestamp).toLocaleDateString()}</span>
+                <span class="text-xs text-pink-600">${h.names.length} names</span>
+              </div>
+              <div class="flex flex-wrap gap-1">
+                ${h.names.slice(0, 5).map(n => `<span class="px-2 py-0.5 text-xs bg-white rounded-full text-gray-700">${escapeHtml(n.name)}</span>`).join('')}
+                ${h.names.length > 5 ? `<span class="px-2 py-0.5 text-xs bg-white rounded-full text-gray-400">+${h.names.length - 5}</span>` : ''}
+              </div>
+            </div>
+          `).join('');
+        } catch (e) {
+          container.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">Error loading history</p>';
+        }
+      }
+
+      document.getElementById('clear-btn').addEventListener('click', function() {
+        if (confirm('Clear all history and favorites?')) {
+          localStorage.removeItem('gamesname_history');
+          localStorage.removeItem('gamesname_favorites');
+          renderFavorites();
+          renderHistory();
+        }
+      });
+
+      renderFavorites();
+      renderHistory();
+    })();
+  </script>
+</Layout>

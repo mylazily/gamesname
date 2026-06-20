@@ -1,0 +1,75 @@
+---
+import { t, type Locale } from '../lib/i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+---
+
+<div class="relative">
+  <input
+    id="prompt-input"
+    type="text"
+    placeholder={t(locale, 'generate.placeholder')}
+    class="w-full h-12 pl-4 pr-4 bg-gray-100 border-0 rounded-xl text-base text-gray-800 placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-pink-500 transition-all"
+    autocomplete="off"
+    enterkeyhint="search"
+  />
+</div>
+
+<div class="mt-3 flex flex-wrap gap-2">
+  <select id="game-type" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
+    <option value="">{t(locale, 'generate.gameType')}</option>
+    <option value="rpg">{t(locale, 'types.rpg')}</option>
+    <option value="fps">{t(locale, 'types.fps')}</option>
+    <option value="moba">{t(locale, 'types.moba')}</option>
+    <option value="mmorpg">{t(locale, 'types.mmorpg')}</option>
+    <option value="strategy">{t(locale, 'types.strategy')}</option>
+    <option value="sandbox">{t(locale, 'types.sandbox')}</option>
+    <option value="racing">{t(locale, 'types.racing')}</option>
+    <option value="fighting">{t(locale, 'types.fighting')}</option>
+  </select>
+
+  <select id="category" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
+    <option value="">{t(locale, 'generate.category')}</option>
+    <option value="character">{t(locale, 'categories.character')}</option>
+    <option value="guild">{t(locale, 'categories.guild')}</option>
+    <option value="team">{t(locale, 'categories.team')}</option>
+    <option value="pet">{t(locale, 'categories.pet')}</option>
+    <option value="mount">{t(locale, 'categories.mount')}</option>
+    <option value="weapon">{t(locale, 'categories.weapon')}</option>
+    <option value="clan">{t(locale, 'categories.clan')}</option>
+  </select>
+
+  <select id="style" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
+    <option value="">{t(locale, 'generate.style')}</option>
+    <option value="epic">{t(locale, 'styles.epic')}</option>
+    <option value="funny">{t(locale, 'styles.funny')}</option>
+    <option value="dark">{t(locale, 'styles.dark')}</option>
+    <option value="mythology">{t(locale, 'styles.mythology')}</option>
+    <option value="fantasy">{t(locale, 'styles.fantasy')}</option>
+    <option value="scifi">{t(locale, 'styles.scifi')}</option>
+    <option value="nature">{t(locale, 'styles.nature')}</option>
+    <option value="mystery">{t(locale, 'styles.mystery')}</option>
+  </select>
+
+  <select id="output-lang" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
+    <option value="en">English</option>
+    <option value="zh">中文</option>
+    <option value="ja">日本語</option>
+    <option value="ko">한국어</option>
+    <option value="es">Español</option>
+  </select>
+
+  <select id="count" class="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-pink-500">
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+  </select>
+</div>
+
+<button id="generate-btn" class="mt-4 w-full h-12 bg-pink-600 text-white font-medium rounded-xl hover:bg-pink-700 transition-colors flex items-center justify-center gap-2">
+  <span id="btn-text">{t(locale, 'generate.button')}</span>
+</button>

@@ -1,0 +1,16 @@
+{
+  "name": "GamesName",
+  "short_name": "GamesName",
+  "description": "AI-powered game name generator",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#ec4899",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

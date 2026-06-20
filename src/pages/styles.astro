@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BottomNav from '../components/BottomNav.astro';
+import { getLocale, t } from '../lib/i18n';
+
+export const prerender = true;
+
+const locale = getLocale(Astro.url);
+
+const styles = [
+  { key: 'epic', icon: 'Zap' },
+  { key: 'funny', icon: 'Smile' },
+  { key: 'dark', icon: 'Moon' },
+  { key: 'mythology', icon: 'Landmark' },
+  { key: 'fantasy', icon: 'Dragon' },
+  { key: 'scifi', icon: 'Rocket' },
+  { key: 'nature', icon: 'Leaf' },
+  { key: 'mystery', icon: 'Eye' },
+];
+
+const STYLE_COLORS = [
+  'bg-pink-50 text-pink-600 hover:bg-pink-100',
+  'bg-blue-50 text-blue-600 hover:bg-blue-100',
+  'bg-green-50 text-green-600 hover:bg-green-100',
+  'bg-yellow-50 text-yellow-600 hover:bg-yellow-100',
+  'bg-purple-50 text-purple-600 hover:bg-purple-100',
+  'bg-red-50 text-red-600 hover:bg-red-100',
+  'bg-indigo-50 text-indigo-600 hover:bg-indigo-100',
+  'bg-teal-50 text-teal-600 hover:bg-teal-100',
+];
+---
+
+<Layout
+  title={t(locale, 'styles.title')}
+  description="Browse game names by style"
+  locale={locale}
+>
+  <main class="max-w-screen-xl mx-auto pb-20">
+    <div class="bg-white border-b border-gray-100">
+      <div class="px-3 py-3">
+        <h1 class="text-xl font-bold text-gray-800">{t(locale, 'styles.title')}</h1>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 p-3">
+      {styles.map((style, i) => (
+        <a href={`/?style=${style.key}`} class={`flex flex-col items-center gap-2 px-4 py-6 rounded-xl transition-colors ${STYLE_COLORS[i % STYLE_COLORS.length]}`}>
+          <span class="text-3xl">{style.icon}</span>
+          <span class="text-sm font-medium">{t(locale, `styles.${style.key}`)}</span>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <BottomNav locale={locale} />
+</Layout>
