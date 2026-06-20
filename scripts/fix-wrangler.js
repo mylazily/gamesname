@@ -1,10 +1,23 @@
-import { readFileSync, writeFileSync, existsSync, unlinkSync, copyFileSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, unlinkSync, copyFileSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 
 const wranglerPath = join(process.cwd(), 'dist', 'server', 'wrangler.json');
 const deployConfigPath = join(process.cwd(), '.wrangler', 'deploy', 'config.json');
-const workerSrc = join(process.cwd(), 'dist', 'server', 'entry.mjs');
-const workerDest = join(process.cwd(), 'dist', 'client', '_worker.js');
+const serverDir = join(process.cwd(), 'dist', 'server');
+const clientDir = join(process.cwd(), 'dist', 'client');
+
+function copyDir(src, dest) {
+  if (!existsSync(dest)) mkdirSync(dest, { recursive: true });
+  for (const item of readdirSync(src)) {
+    const srcPath = join(src, item);
+    const destPath = join(dest, item);
+    if (statSync(srcPath).isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      copyFileSync(srcPath, destPath);
+    }
+  }
+}
 
 try {
   // Fix 1: Clean up dist/server/wrangler.json
@@ -12,7 +25,6 @@ try {
     const content = readFileSync(wranglerPath, 'utf-8');
     const config = JSON.parse(content);
 
-    // Remove KV namespaces that don't have an id (Pages requires id)
     if (config.kv_namespaces) {
       config.kv_namespaces = config.kv_namespaces.filter(kv => kv.id);
     }
@@ -20,12 +32,10 @@ try {
       config.previews.kv_namespaces = config.previews.kv_namespaces.filter(kv => kv.id);
     }
 
-    // Remove ASSETS binding - reserved name in Pages
     if (config.assets && config.assets.binding === 'ASSETS') {
       delete config.assets;
     }
 
-    // Remove unsupported fields that cause warnings
     const unsupportedFields = [
       'definedEnvironments', 'ai_search_namespaces', 'ai_search',
       'agent_memory', 'secrets_store_secrets', 'artifacts',
@@ -36,7 +46,6 @@ try {
       delete config[field];
     }
 
-    // Clean up dev field
     if (config.dev) {
       delete config.dev.enable_containers;
       delete config.dev.generate_types;
@@ -52,11 +61,19 @@ try {
     console.log('Removed .wrangler/deploy/config.json redirect');
   }
 
-  // Fix 3: Copy worker entry to dist/client/_worker.js for CF Pages
-  // CF Pages uses _worker.js in the static output root for SSR
-  if (existsSync(workerSrc)) {
-    copyFileSync(workerSrc, workerDest);
-    console.log('Copied worker to dist/client/_worker.js');
+  // Fix 3: Copy entire dist/server to dist/client for CF Pages _worker.js
+  // CF Pages needs _worker.js and all its chunks in the same directory
+  if (existsSync(serverDir)) {
+    copyDir(serverDir, clientDir);
+    console.log('Copied dist/server to dist/client');
+  }
+
+  // Fix 4: Rename entry.mjs to _worker.js (CF Pages convention)
+  const entryPath = join(clientDir, 'entry.mjs');
+  const workerPath = join(clientDir, '_worker.js');
+  if (existsSync(entryPath) && !existsSync(workerPath)) {
+    copyFileSync(entryPath, workerPath);
+    console.log('Created _worker.js from entry.mjs');
   }
 
   console.log('Wrangler config fixed for Cloudflare Pages deployment');
